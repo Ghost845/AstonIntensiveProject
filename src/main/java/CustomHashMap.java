@@ -3,15 +3,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class CustomHashMap<K, V> {
+public class CustomHashMap<K, V> implements CustomHashMapInterface<K, V>{
 
     private static final int INITIAL_CAPACITY = 16;
     private static final double LOAD_FACTOR = 0.75;
 
-    private Entry<K, V>[] array = new Entry[INITIAL_CAPACITY];
+    private Object[] array = new Object[INITIAL_CAPACITY];
     private int size = 0;
 
-    void put(K key, V value) {
+    @Override
+    public void put(K key, V value) {
         if (size >= (array.length * LOAD_FACTOR)) {
             resize();
         }
@@ -21,9 +22,9 @@ public class CustomHashMap<K, V> {
         }
     }
 
-    private boolean put(K key, V value, Entry<K, V>[] destinationArray) {
+    private boolean put(K key, V value, Object[] destinationArray) {
         int position = getElementPosition(key, destinationArray.length);
-        Entry<K, V> currentElement = destinationArray[position];
+        Entry<K, V> currentElement = (Entry) destinationArray[position];
         if (currentElement == null) {
             Entry<K, V> entry = new Entry(key, value, null);
             destinationArray[position] = entry;
@@ -43,9 +44,10 @@ public class CustomHashMap<K, V> {
         }
     }
 
-    V get(K key) {
+    @Override
+    public V get(K key) {
         int position = getElementPosition(key, array.length);
-        Entry<K, V> currentElement = array[position];
+        Entry<K, V> currentElement = (Entry) array[position];
         while (currentElement != null) {
             if (currentElement.key.equals(key)) {
                 return currentElement.value;
@@ -55,11 +57,12 @@ public class CustomHashMap<K, V> {
         return null;
     }
 
-    Set<K> keySet() {
+    @Override
+    public Set<K> keySet() {
         Set<K> keys = new HashSet<>();
 
-        for (Entry<K, V> entry: array) {
-            Entry<K, V> currentElement = entry;
+        for (Object entry: array) {
+            Entry<K, V> currentElement = (Entry) entry;
             while (currentElement != null) {
                 keys.add(currentElement.key);
                 currentElement = currentElement.next;
@@ -68,11 +71,12 @@ public class CustomHashMap<K, V> {
         return keys;
     }
 
-    List<V> values() {
+    @Override
+    public List<V> values() {
         List<V> values = new ArrayList<>();
 
-        for (Entry<K, V> entry: array) {
-            Entry<K, V> currentElement = entry;
+        for (Object entry: array) {
+            Entry<K, V> currentElement = (Entry) entry;
             while (currentElement != null) {
                 values.add(currentElement.value);
                 currentElement = currentElement.next;
@@ -81,9 +85,10 @@ public class CustomHashMap<K, V> {
         return values;
     }
 
-    boolean remove(K key) {
+    @Override
+    public boolean remove(K key) {
         int position = getElementPosition(key, array.length);
-        Entry<K, V> currentElement = array[position];
+        Entry<K, V> currentElement = (Entry) array[position];
         if (currentElement != null && currentElement.key.equals(key)) {
             array[position] = currentElement.next;
             size--;
@@ -105,19 +110,21 @@ public class CustomHashMap<K, V> {
         return false;
     }
 
-    int size() {
+    @Override
+    public int size() {
         return size;
     }
 
-    void clear() {
-        array = new Entry[INITIAL_CAPACITY];
+    @Override
+    public void clear() {
+        array = new Object[INITIAL_CAPACITY];
         size = 0;
     }
 
     private void resize() {
-        Entry<K, V>[] newArray = new Entry[array.length * 2];
-        for (Entry<K, V> entry: array) {
-            Entry<K, V> currentElement = entry;
+        Object[] newArray = new Object[array.length * 2];
+        for (Object entry: array) {
+            Entry<K, V> currentElement = (Entry) entry;
             while (currentElement != null) {
                 put(currentElement.key, currentElement.value, newArray);
                 currentElement = currentElement.next;
@@ -130,7 +137,7 @@ public class CustomHashMap<K, V> {
         return Math.abs(key.hashCode() % arrayLength);
     }
 
-    private static class Entry<K, V> {
+    private class Entry<K, V> {
         K key;
         V value;
         Entry<K, V> next;
