@@ -1,14 +1,14 @@
 package org.example.ui;
 
-import org.example.entity.User;
-import org.example.service.UserService;
+import org.example.entity.UserEntity;
+import org.example.service.UserServiceImpl;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleUI {
 
-    private final UserService service = new UserService();
+    private final UserServiceImpl service = new UserServiceImpl();
     private final Scanner scanner = new Scanner(System.in);
 
     public void start() {
@@ -56,7 +56,7 @@ public class ConsoleUI {
     }
 
     private void showAll() {
-        List<User> users = service.getAllUsers();
+        List<UserEntity> users = service.getAllUsers();
         users.forEach(System.out::println);
     }
 
@@ -64,7 +64,7 @@ public class ConsoleUI {
         System.out.print("ID: ");
         Long id = Long.parseLong(scanner.nextLine());
 
-        User user = service.getUser(id);
+        UserEntity user = service.getUser(id);
         System.out.println(user);
     }
 

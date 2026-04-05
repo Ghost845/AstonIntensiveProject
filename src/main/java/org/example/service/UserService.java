@@ -1,38 +1,55 @@
 package org.example.service;
 
-import org.example.dao.UserDao;
-import org.example.dao.UserDaoImpl;
-import org.example.entity.User;
+import org.example.entity.UserEntity;
 
 import java.util.List;
 
-public class UserService {
+/**
+ * Сервисный слой для работы с пользователями.
+ * <p>
+ * Содержит бизнес-логику приложения и взаимодействует с DAO-слоем.
+ * Предоставляет методы для выполнения CRUD-операций над сущностью {@link UserEntity}.
+ */
+public interface UserService {
 
-    private final UserDao userDao = new UserDaoImpl();
+    /**
+     * Создаёт нового пользователя.
+     *
+     * @param name  имя пользователя
+     * @param email email пользователя
+     * @param age   возраст пользователя
+     */
+    void createUser(String name, String email, int age);
 
-    public void createUser(String name, String email, int age) {
-        userDao.save(new User(name, email, age));
-    }
+    /**
+     * Возвращает пользователя по идентификатору.
+     *
+     * @param id уникальный идентификатор пользователя
+     * @return найденный пользователь или {@code null}, если пользователь не найден
+     */
+    UserEntity getUser(Long id);
 
-    public User getUser(Long id) {
-        return userDao.findById(id);
-    }
+    /**
+     * Возвращает список всех пользователей.
+     *
+     * @return список пользователей; может быть пустым
+     */
+    List<UserEntity> getAllUsers();
 
-    public List<User> getAllUsers() {
-        return userDao.findAll();
-    }
+    /**
+     * Обновляет данные пользователя.
+     *
+     * @param id    идентификатор пользователя
+     * @param name  новое имя
+     * @param email новый email
+     * @param age   новый возраст
+     */
+    void updateUser(Long id, String name, String email, int age);
 
-    public void updateUser(Long id, String name, String email, int age) {
-        User user = userDao.findById(id);
-        if (user != null) {
-            user.setName(name);
-            user.setEmail(email);
-            user.setAge(age);
-            userDao.update(user);
-        }
-    }
-
-    public void deleteUser(Long id) {
-        userDao.delete(id);
-    }
+    /**
+     * Удаляет пользователя по идентификатору.
+     *
+     * @param id уникальный идентификатор пользователя
+     */
+    void deleteUser(Long id);
 }
