@@ -1,6 +1,8 @@
 package org.example.ui;
 
+import org.example.dao.UserDaoImpl;
 import org.example.entity.UserEntity;
+import org.example.service.UserService;
 import org.example.service.UserServiceImpl;
 
 import java.util.List;
@@ -8,7 +10,7 @@ import java.util.Scanner;
 
 public class ConsoleUI {
 
-    private final UserServiceImpl service = new UserServiceImpl();
+    private final UserService service = new UserServiceImpl(new UserDaoImpl());
     private final Scanner scanner = new Scanner(System.in);
 
     public void start() {
