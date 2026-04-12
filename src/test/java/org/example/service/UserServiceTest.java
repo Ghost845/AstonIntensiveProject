@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
@@ -16,9 +17,8 @@ import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ExtendWith(org.mockito.junit.jupiter.MockitoExtension.class)
+@ExtendWith(MockitoExtension.class)
 class UserServiceTest {
-
     @Mock
     private UserDao userDao;
 
@@ -45,14 +45,20 @@ class UserServiceTest {
 
     @Test
     void getAllUsers_shouldReturnList() {
-        when(userDao.findAll()).thenReturn(List.of(
-                new UserEntity("A", "a@mail.com", 20),
-                new UserEntity("B", "b@mail.com", 30)
-        ));
+        UserEntity user1 = new UserEntity("A", "a@mail.com", 20);
+        UserEntity user2 = new UserEntity("B", "b@mail.com", 30);
+
+        when(userDao.findAll()).thenReturn(List.of(user1, user2));
 
         List<UserEntity> users = userService.getAllUsers();
 
         assertEquals(2, users.size());
+
+        assertEquals("A", users.get(0).getName());
+        assertEquals("a@mail.com", users.get(0).getEmail());
+
+        assertEquals("B", users.get(1).getName());
+        assertEquals("b@mail.com", users.get(1).getEmail());
     }
 
     @Test
