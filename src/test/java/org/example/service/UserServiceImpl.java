@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Реализация {@link UserService}, использующая {@link UserRepository}
+ * для взаимодействия с базой данных.
+ */
 @Service
 public class UserServiceImpl implements UserService {
 
