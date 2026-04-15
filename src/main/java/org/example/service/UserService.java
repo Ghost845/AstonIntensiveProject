@@ -1,55 +1,57 @@
 package org.example.service;
 
-import org.example.entity.UserEntity;
+import org.example.dto.UserRequestDto;
+import org.example.dto.UserResponseDto;
 
 import java.util.List;
 
 /**
- * Сервисный слой для работы с пользователями.
+ * Сервисный слой для управления пользователями.
  * <p>
- * Содержит бизнес-логику приложения и взаимодействует с DAO-слоем.
- * Предоставляет методы для выполнения CRUD-операций над сущностью {@link UserEntity}.
+ * Содержит бизнес-логику приложения и выполняет операции
+ * над пользователями через слой репозитория.
+ * Работает с DTO, не раскрывая сущности {@code UserEntity} наружу.
  */
 public interface UserService {
 
     /**
      * Создаёт нового пользователя.
      *
-     * @param name  имя пользователя
-     * @param email email пользователя
-     * @param age   возраст пользователя
+     * @param dto объект с входными данными пользователя
+     * @return созданный пользователь в виде {@link UserResponseDto}
      */
-    void createUser(String name, String email, int age);
+    UserResponseDto create(UserRequestDto dto);
 
     /**
      * Возвращает пользователя по идентификатору.
      *
      * @param id уникальный идентификатор пользователя
-     * @return найденный пользователь или {@code null}, если пользователь не найден
+     * @return пользователь в виде {@link UserResponseDto}
+     * @throws RuntimeException если пользователь не найден
      */
-    UserEntity getUser(Long id);
+    UserResponseDto getById(Long id);
 
     /**
      * Возвращает список всех пользователей.
      *
-     * @return список пользователей; может быть пустым
+     * @return список пользователей в виде DTO; может быть пустым
      */
-    List<UserEntity> getAllUsers();
+    List<UserResponseDto> getAll();
 
     /**
      * Обновляет данные пользователя.
      *
-     * @param id    идентификатор пользователя
-     * @param name  новое имя
-     * @param email новый email
-     * @param age   новый возраст
+     * @param id  идентификатор пользователя
+     * @param dto новые данные пользователя
+     * @return обновлённый пользователь в виде {@link UserResponseDto}
+     * @throws RuntimeException если пользователь не найден
      */
-    void updateUser(Long id, String name, String email, int age);
+    UserResponseDto update(Long id, UserRequestDto dto);
 
     /**
      * Удаляет пользователя по идентификатору.
      *
      * @param id уникальный идентификатор пользователя
      */
-    void deleteUser(Long id);
+    void delete(Long id);
 }
