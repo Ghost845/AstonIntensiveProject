@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 public class UserMapper {
 
-    public static UserEntity toEntity(UserRequestDto dto) {
+    public static UserEntity ofDto(UserRequestDto dto) {
         UserEntity user = new UserEntity();
         user.setName(dto.name);
         user.setEmail(dto.email);
