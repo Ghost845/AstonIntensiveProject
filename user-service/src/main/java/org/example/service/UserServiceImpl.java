@@ -4,6 +4,7 @@ import org.example.dto.UserRequestDto;
 import org.example.dto.UserResponseDto;
 import org.example.entity.UserEntity;
 import org.example.event.UserEvent;
+import org.example.event.UserOperation;
 import org.example.kafka.UserKafkaProducer;
 import org.example.mapper.UserMapper;
 import org.example.repository.UserRepository;
@@ -27,7 +28,7 @@ public class UserServiceImpl implements UserService {
         UserEntity user = UserMapper.ofDto(dto);
         UserEntity saved = repository.save(user);
 
-        producer.send(new UserEvent("CREATE", saved.getEmail()));
+        producer.send(new UserEvent(UserOperation.CREATE, saved.getEmail()));
 
         return UserMapper.toDto(saved);
     }
@@ -66,6 +67,6 @@ public class UserServiceImpl implements UserService {
 
         repository.deleteById(id);
 
-        producer.send(new UserEvent("DELETE", user.getEmail()));
+        producer.send(new UserEvent(UserOperation.DELETE, user.getEmail()));
     }
 }

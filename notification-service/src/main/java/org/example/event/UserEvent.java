@@ -4,13 +4,13 @@ import java.io.Serializable;
 
 public class UserEvent implements Serializable {
 
-    public String operation;
+    public UserOperation operation;
 
     public String email;
 
     public UserEvent() {}
 
-    public UserEvent(String operation, String email) {
+    public UserEvent(UserOperation operation, String email) {
         this.operation = operation;
         this.email = email;
     }
