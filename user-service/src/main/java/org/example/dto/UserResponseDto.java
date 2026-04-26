@@ -1,11 +1,13 @@
 package org.example.dto;
 
+import org.springframework.hateoas.RepresentationModel;
+
 /**
  * DTO для возврата данных пользователя через REST API.
  * <p>
  * Используется как выходная модель и не содержит внутренней логики сущности.
  */
-public class UserResponseDto {
+public class UserResponseDto extends RepresentationModel<UserResponseDto> {
 
     /**
      * Уникальный идентификатор пользователя
