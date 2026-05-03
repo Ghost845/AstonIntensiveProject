@@ -1,5 +1,6 @@
 package org.example.service;
 
+import com.sun.org.slf4j.internal.LoggerFactory;
 import org.example.dto.UserRequestDto;
 import org.example.dto.UserResponseDto;
 import org.example.entity.UserEntity;
@@ -11,9 +12,12 @@ import org.example.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private final UserKafkaProducer producer;
     private final UserRepository repository;
@@ -68,5 +72,18 @@ public class UserServiceImpl implements UserService {
         repository.deleteById(id);
 
         producer.send(new UserEvent(UserOperation.DELETE, user.getEmail()));
+    }
+
+    @CircuitBreaker(name = "kafkaCircuit", fallbackMethod = "fallbackKafka")
+    public void sendKafkaEvent(UserOperation operation, String email) {
+
+        log.info("Sending Kafka event: {} {}", operation, email);
+
+        producer.send(new UserEvent(operation, email));
+    }
+
+    public void fallbackKafka(UserOperation operation, String email, Throwable t) {
+        log.error("Kafka unavailable. Fallback triggered. operation={}, email={}",
+                operation, email, t);
     }
 }
