@@ -1,19 +1,19 @@
+server:
+  port: 8081
+
 spring:
+  application:
+    name: user-service
+
   datasource:
-    url: jdbc:postgresql://localhost:5432/userdb
+    url: jdbc:postgresql://postgres:5432/users_db
     username: postgres
     password: postgres
 
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-
   kafka:
-    bootstrap-servers: localhost:9092
-    producer:
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    bootstrap-servers: kafka:9092
 
-app:
-  kafka:
-    topic: user-topic
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka
