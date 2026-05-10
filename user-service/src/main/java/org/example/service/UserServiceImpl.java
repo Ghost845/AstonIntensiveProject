@@ -1,5 +1,6 @@
 package org.example.service;
 
+import com.sun.org.slf4j.internal.Logger;
 import com.sun.org.slf4j.internal.LoggerFactory;
 import org.example.dto.UserRequestDto;
 import org.example.dto.UserResponseDto;
@@ -12,7 +13,6 @@ import org.example.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 @Service
 public class UserServiceImpl implements UserService {
